@@ -38,11 +38,12 @@ $products = $result->fetch_all(MYSQLI_ASSOC);
 function handleAdd($conn) {
     $productName = $_POST['productName'];
     $price = $_POST['price'];
+    $category = $_POST['category'];
     $imageURL = handleImageUpload();
     
     if ($imageURL) {
-        $stmt = $conn->prepare("INSERT INTO product (productName, price, imageURL) VALUES (?, ?, ?)");
-        $stmt->bind_param("sds", $productName, $price, $imageURL);
+        $stmt = $conn->prepare("INSERT INTO product (productName, price, imageURL, category) VALUES (?, ?, ?, ?)");
+        $stmt->bind_param("sdss", $productName, $price, $imageURL, $category);
         $stmt->execute();
         $stmt->close();
         
@@ -57,14 +58,15 @@ function handleUpdate($conn) {
     $productId = $_POST['product_id'];
     $productName = $_POST['productName'];
     $price = $_POST['price'];
+    $category = $_POST['category'];
     $imageURL = handleImageUpload();
     
     if ($imageURL) {
-        $stmt = $conn->prepare("UPDATE product SET productName = ?, price = ?, imageURL = ? WHERE product_id = ?");
-        $stmt->bind_param("sdsi", $productName, $price, $imageURL, $productId);
+        $stmt = $conn->prepare("UPDATE product SET productName = ?, price = ?, imageURL = ?, category = ? WHERE product_id = ?");
+        $stmt->bind_param("sdssi", $productName, $price, $imageURL, $category, $productId);
     } else {
-        $stmt = $conn->prepare("UPDATE product SET productName = ?, price = ? WHERE product_id = ?");
-        $stmt->bind_param("sdi", $productName, $price, $productId);
+        $stmt = $conn->prepare("UPDATE product SET productName = ?, price = ?, category = ? WHERE product_id = ?");
+        $stmt->bind_param("sdsi", $productName, $price, $category, $productId);
     }
     
     $stmt->execute();
@@ -128,6 +130,9 @@ function handleImageUpload() {
     }
     return false;
 }
+
+// Category options
+$categories = ['Input Devices', 'Output Devices', 'Storage Devices', 'Others'];
 ?>
 
 <!DOCTYPE html>
@@ -155,6 +160,12 @@ function handleImageUpload() {
     <form action="" method="post" enctype="multipart/form-data">
         <input type="text" name="productName" placeholder="Product Name" required>
         <input type="number" name="price" placeholder="Price" step="0.01" required>
+        <select name="category" required>
+            <option value="">Select Category</option>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo htmlspecialchars($category); ?>"><?php echo htmlspecialchars($category); ?></option>
+            <?php endforeach; ?>
+        </select>
         <input type="file" name="image" accept="image/*" required>
         <input type="submit" name="add" value="Add Product">
     </form>
@@ -165,6 +176,7 @@ function handleImageUpload() {
             <th>ID</th>
             <th>Name</th>
             <th>Price</th>
+            <th>Category</th>
             <th>Image</th>
             <th>Actions</th>
         </tr>
@@ -173,12 +185,20 @@ function handleImageUpload() {
             <td><?php echo $product['product_id']; ?></td>
             <td><?php echo htmlspecialchars($product['productName']); ?></td>
             <td><?php echo $product['price']; ?></td>
+            <td><?php echo htmlspecialchars($product['category']); ?></td>
             <td><img src="<?php echo htmlspecialchars($product['imageURL']); ?>" alt="<?php echo htmlspecialchars($product['productName']); ?>" width="100"></td>
             <td>
                 <form action="" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="product_id" value="<?php echo $product['product_id']; ?>">
                     <input type="text" name="productName" value="<?php echo htmlspecialchars($product['productName']); ?>" required>
                     <input type="number" name="price" value="<?php echo $product['price']; ?>" step="0.01" required>
+                    <select name="category" required>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo htmlspecialchars($category); ?>" <?php echo ($product['category'] == $category) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($category); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                     <input type="file" name="image" accept="image/*">
                     <input type="submit" name="update" value="Update">
                 </form>

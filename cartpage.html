@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page</title>
+    <link rel="stylesheet" href="cartpage.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="index.html"> <img src="logo.png" alt="Logo"> </a>
+        </div>
+        <nav class="nav-bar">
+            <ul class="nav-list">
+                <li class="nav-item"><a href="index.html">Home</a></li>
+                <li class="nav-item"><a href="aboutus.html">About</a></li>
+                <li class="nav-item"><a href="cartpage.html">Cart</a></li>
+                <li class="nav-item"><a href="contactus.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>Shopping Cart</h1>
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <div class="cart-info">
+                            <img src="feimg1.jpg" alt="Product 1">
+                            <div>
+                                <p>Intel core i5 10th Gen Processor</p>
+                                <small>Price: Rs 47,500</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>Rs 47,500</td>
+                    <td><input type="number" value="1"></td>
+                    <td>Rs 47,500</td>
+                    <td><button class="remove-button">Remove</button></td>
+                </tr>
+                <!-- Repeat for other products -->
+            </tbody>
+        </table>
+        <div class="cart-summary">
+            <h2>Cart Summary</h2>
+            <div class="summary-item">
+                <span>Subtotal</span>
+                <span>Rs 47,500</span>
+            </div>
+            <div class="summary-item">
+                <span>Tax</span>
+                <span>Rs 500</span>
+            </div>
+            <div class="summary-item">
+                <span>Total</span>
+                <span>Rs 47,000</span>
+            </div>
+            <button class="checkout-button">Proceed to Checkout</button>
+        </div>
+    </main>
+
+    <footer class="footer" style="float: left; width: 100%;">
+        <div class="footer-container">
+            <div class="footer-section about">
+                <h2>About Us</h2>
+                <p style="text-align: left;">Our mission is to provide you with top-quality components, exceptional
+                    customer service, and
+                    competitive prices.
+                </p>
+            </div>
+            <div class="footer-section links">
+                <h2>Quick Links</h2>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="aboutus.html">About</a></li>
+                    <li><a href="payment-method.html">Payment methods</a></li>
+                    <li><a href="contactus.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h2>Contact Us</h2>
+                <ul>
+                    <li><strong>Email:</strong> prabashheethanjana@gmail.com</li>
+                    <li><strong>Phone:</strong> +94 112244872 / +94 767377939</li>
+                    <li><strong>Address:</strong> 123 Nugahena Rd, Niwandama, JaEla</li>
+                </ul>
+            </div>
+            <div class="footer-section social">
+                <h2>Follow Us</h2>
+                <div class="social-icons">
+                    <a href="www.facebook.com"><i class="fa-brands fa-square-facebook fa-lg"
+                            style="color: white;"></i></a>
+                    <a href="www.x.com"><i class="fa-brands fa-x-twitter fa-lg" style="color: white;"></i></a>
+                    <a href="www.instagram.com"><i class="fa-brands fa-instagram fa-lg" style="color: white;"></i></a>
+                    <a href="www.linkedin.com"><i class="fa-brands fa-linkedin fa-lg" style="color: white;"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</body>
+
+</html>

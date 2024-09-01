@@ -36,24 +36,35 @@
         if ($password !== $confirm_password) {
             echo "<p style='color:red;'>Passwords do not match!</p>";
         } else {
-            // Hash the password for security
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            // Check if email already exists
+            $email_check_sql = "SELECT email FROM users WHERE email = ?";
+            $stmt = $conn->prepare($email_check_sql);
+            $stmt->bind_param("s", $email);
+            $stmt->execute();
+            $stmt->store_result();
 
-            // Prepare SQL statement to insert data
-            $sql = "INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, 'user')";
-            $stmt = $conn->prepare($sql);
-
-            if ($stmt) {
-                // Bind parameters and execute the statement
-                $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password);
-                if ($stmt->execute()) {
-                    echo "<p style='color:green;'>Registration successful!</p>";
-                } else {
-                    echo "<p style='color:red;'>Error: " . $stmt->error . "</p>";
-                }
-                $stmt->close();
+            if ($stmt->num_rows > 0) {
+                echo "<p style='color:red;'>An account with this email already exists!</p>";
             } else {
-                echo "<p style='color:red;'>Error: " . $conn->error . "</p>";
+                // Hash the password for security
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+                // Prepare SQL statement to insert data
+                $sql = "INSERT INTO users (first_name, last_name, email, password, role) VALUES (?, ?, ?, ?, 'user')";
+                $stmt = $conn->prepare($sql);
+
+                if ($stmt) {
+                    // Bind parameters and execute the statement
+                    $stmt->bind_param("ssss", $first_name, $last_name, $email, $hashed_password);
+                    if ($stmt->execute()) {
+                        echo "<p style='color:green;'>Registration successful!</p>";
+                    } else {
+                        echo "<p style='color:red;'>Error: " . $stmt->error . "</p>";
+                    }
+                    $stmt->close();
+                } else {
+                    echo "<p style='color:red;'>Error: " . $conn->error . "</p>";
+                }
             }
         }
     }
